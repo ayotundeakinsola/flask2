@@ -4,10 +4,11 @@ import os
 import json
 
 #import Flask class
-from flask import Flask, render_template
+from flask import Flask, render_template, request, flash
 
 #Name of the application module
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 #this is a decorator and it is used to wrap functions
 @app.route('/')
@@ -35,8 +36,12 @@ def about_member(member_name):
     return render_template("member.html", member=member)
 
 
-@app.route('/contact')
+@app.route('/contact', methods=["GET", "POST"])
 def contact():
+    if request.method == "POST":
+        flash("Thanks {}, we have received your message".format(
+            request.form["name"]
+        ))
     return render_template("contact.html", page_title="Contact")
 
 
